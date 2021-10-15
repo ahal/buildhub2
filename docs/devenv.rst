@@ -25,36 +25,25 @@ Then do the following:
    # Build the Docker images
    $ make build
 
+   # Set up django environment variables
+   $ export DJANGO_CONFIGURATION=Stage
+   $ export DJANGO_ALLOWED_HOSTS=buildhub.mozilla.org
+
+   # Generate a new secret key using a password manager
+   $ export DJANGO_SECRET_KEY=sSJ19WAj06QtvwunmZKh8yEzDdTxC2IPUXfea5FkrVGNoM4iOp
+
    # Wipe and initialize services
    $ make setup
 
 If ``make setup`` fails, run the following command to see detailed logs:
 
 .. code-block:: shell
+
    $ docker-compose up
 
+Then take a look at the `Troubleshooting`_ section.
+
 Once you've done that, you can run Buildhub2.
-
-Troubleshooting
-~~~~~~~~~~~~~~~
-
-Below are some known issues you might run into and their workarounds.
-
-* ElasticSearch fails with following error:
-
-.. code-block:: shell
-
-   elasticsearch    | ERROR: [1] bootstrap checks failed
-   elasticsearch    | [1]: max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]
-
-This can be worked around by running:
-
-.. code-block:: shell
-
-   $ sysctl -w vm.max_map_count=262144
-
-If you want this to be permanent across restarts, you also need to add this
-value to ``/etc/sysctl.conf``.
 
 
 Configuration
@@ -173,3 +162,25 @@ You can run the daemon with:
    $ make daemon
 
 You can quit it with ``Ctrl-C``.
+
+
+Troubleshooting
+===============
+
+Below are some known issues you might run into and their workarounds.
+
+* ElasticSearch fails with following error:
+
+.. code-block:: shell
+
+   elasticsearch    | ERROR: [1] bootstrap checks failed
+   elasticsearch    | [1]: max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]
+
+This can be worked around by running:
+
+.. code-block:: shell
+
+   $ sysctl -w vm.max_map_count=262144
+
+If you want this to be permanent across restarts, you also need to add this
+value to ``/etc/sysctl.conf``.
